@@ -25,15 +25,27 @@ alphabets = [
      'X', 'Y', 'Z'],
     ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц',
      'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я']]
-print("Enter string")
-InputString = input()
 
+defaultFileName = "inputTextFile.txt"
+print("Enter file name")
+fileName = input()
+if fileName == "":
+    fileName = defaultFileName
+
+inputFile = open(fileName, "r", encoding="utf-8")
+InputString = inputFile.read()
+
+defaultMode = 2
 print("Enter mode number\n"
       "1 - decrypt\n"
       "2 - encrypt\n"
       "3 - breaking\n")
 
-mode = int(input())
+mode = input()
+if mode == "":
+    mode = defaultMode
+else:
+    mode = int(mode)
 
 if mode == 1 or mode == 2:
     print("Enter key")
