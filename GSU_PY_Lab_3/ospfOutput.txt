@@ -1,0 +1,8 @@
+Protocol: OSPF Prefix: 10.0.24.0/24 AD/Metric: [110/41] Next-Hop: 10.0.13.3 Last update: 3d18h Outbound Interface: GigabitEthernet0/0
+Protocol: OSPF Prefix: 10.0.28.0/24 AD/Metric: [110/31] Next-Hop: 10.0.13.3 Last update: 3d20h Outbound Interface: GigabitEthernet0/0
+Protocol: OSPF Prefix: 10.0.37.0/24 AD/Metric: [110/11] Next-Hop: 10.0.13.3 Last update: 3d20h Outbound Interface: GigabitEthernet0/0
+Protocol: OSPF Prefix: 10.0.41.0/24 AD/Metric: [110/51] Next-Hop: 10.0.13.3 Last update: 3d20h Outbound Interface: GigabitEthernet0/0
+Protocol: OSPF Prefix: 10.0.78.0/24 AD/Metric: [110/21] Next-Hop: 10.0.13.3 Last update: 3d20h Outbound Interface: GigabitEthernet0/0
+Protocol: OSPF Prefix: 10.0.79.0/24 AD/Metric: [110/20] Next-Hop: 10.0.19.9 Last update: 4d02h Outbound Interface: GigabitEthernet0/2
+Protocol: OSPF Prefix: 10.0.81.0/24 AD/Metric: [110/41] Next-Hop: 10.0.13.3 Last update: 3d20h Outbound Interface: GigabitEthernet0/0
+Protocol: OSPF Prefix: 10.0.91.0/24 AD/Metric: [110/60] Next-Hop: 10.0.19.9 Last update: 3d19h Outbound Interface: GigabitEthernet0/2
