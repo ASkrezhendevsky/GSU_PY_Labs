@@ -27,8 +27,24 @@ import re
 
 
 def parch_cfg(file_name):
-    inputFile = open(file_name, mode="r")
-    fileText = inputFile.read()
-    if re.search(reg, line):
-            print(line)
-    re.findall()
+    input_file = open(file_name, mode="r")
+    input_lines = input_file.readlines()
+    interface_regex = "^interface"
+    new_comand_block = "^\w"
+    ip_address_pattern = "(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"
+    is_interface_block = False
+    result_lines = []
+    for line in input_lines:
+        if re.search(new_comand_block, line):
+            is_interface_block = False
+            if re.search(interface_regex, line):
+                is_interface_block = True
+            continue
+        if is_interface_block:
+            match = re.search(ip_address_pattern, line)
+            if match:
+                result_lines.append((match[1], match[2]))
+    return result_lines
+
+
+print(parch_cfg("config_r1.txt"))

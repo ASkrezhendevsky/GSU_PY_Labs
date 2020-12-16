@@ -22,5 +22,30 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 '''
+import re
+
+
+def parse_sh_ip_int_br(file_name):
+    input_file = open(file_name, mode="r")
+    input_lines = input_file.readlines()
+    result = []
+    for line in input_lines:
+        if re.search("^\w+#", line) or re.search("^Interface", line):
+            continue;
+        row = re.split("\s+", line)
+        result.append((row[0], row[1], row[4], row[5]))
+    return result
 
 headers = ['interface', 'address', 'status', 'protocol']
+
+settings = parse_sh_ip_int_br("sh_ip_int_br_2.txt")
+
+result = []
+
+for int_setting in settings:
+    result_dict = {}
+    for i in range(len(headers)):
+        result_dict[i] = int_setting[i]
+    result.append(result_dict)
+
+print(result)

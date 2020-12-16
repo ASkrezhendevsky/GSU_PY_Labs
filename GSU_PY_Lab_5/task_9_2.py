@@ -22,6 +22,8 @@
 
 '''
 
+import re
+
 
 def return_match(file_name, reg):
     input_file = open(file_name, "r")
@@ -31,6 +33,7 @@ def return_match(file_name, reg):
         match = re.search(reg, line)
         if match:
             result_lines.append(match[0])
+    return result_lines
 
 
-return_match("sh_ip_int_br.txt", "d+\.d+\.d+\.d+\")
+print(return_match("sh_ip_int_br.txt", "\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"))

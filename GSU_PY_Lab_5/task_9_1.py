@@ -1,9 +1,9 @@
 import re
 
-fileName = input()
+file_name = input()
 reg = input()
-inputFile = open(fileName, mode="r")
-fileLines = inputFile.readlines()
+input_file = open(file_name, mode="r")
+fileLines = input_file.readlines()
 for line in fileLines:
     if re.search(reg, line):
         print(line)

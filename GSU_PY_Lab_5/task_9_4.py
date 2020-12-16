@@ -23,3 +23,18 @@
 
 '''
 
+import re
+
+
+def parse_sh_ip_int_br(file_name):
+    input_file = open(file_name, mode="r")
+    input_lines = input_file.readlines()
+    result = []
+    for line in input_lines:
+        if re.search("^\w+#", line) or re.search("^Interface", line):
+            continue;
+        row = re.split("\s+", line)
+        result.append((row[0], row[1], row[4], row[5]))
+    return result
+
+print(parse_sh_ip_int_br("sh_ip_int_br_2.txt"))
