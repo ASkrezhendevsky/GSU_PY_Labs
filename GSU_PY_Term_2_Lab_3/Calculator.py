@@ -2,18 +2,16 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
+import re
 
 
 class MainApp(App):
     clear_label = "C"
     decimal_delimiter = "."
+    operators = ["/", "*", "+", "-"]
 
     def build(self):
-        self.operators = ["/", "*", "+", "-"]
-        self.last_was_operator = None
-        self.last_button = None
         self.current_text = ""
-        self.current_number_has_dot = None
 
         main_layout = BoxLayout(orientation="vertical")
 
@@ -47,7 +45,7 @@ class MainApp(App):
                     button.bind(on_press=self.on_dot_button_press)
                 elif label == MainApp.clear_label:
                     button.bind(on_press=self.on_clear_button_press)
-                elif label in self.operators:
+                elif label in MainApp.operators:
                     button.bind(on_press=self.on_operator_button_press)
                 h_layout.add_widget(button)
             main_layout.add_widget(h_layout)
@@ -62,65 +60,61 @@ class MainApp(App):
 
     def on_operator_button_press(self, instance):
         button_text = instance.text
+        last_button = self.get_last_button()
+        last_was_operator = self.is_last_char_operator()
 
-        if self.current_text and self.last_was_operator:
+        if last_was_operator:
             # Не добавляйте два оператора подряд, рядом друг с другом
             return
         elif self.current_text == "":
             # Первый символ не может быть оператором
             return
-        elif self.last_button == MainApp.decimal_delimiter:
+        elif last_button == MainApp.decimal_delimiter:
             # Unable to print operator after dot
             return
 
         self.pritn_to_text_bar(self.solution, button_text)
 
-        self.last_button = button_text
-        self.last_was_operator = True
-        self.current_number_has_dot = False
-
     def on_number_button_press(self, instance):
         button_text = instance.text
+        last_was_operator = self.is_last_char_operator()
 
-        if button_text == "0" and (self.last_was_operator or self.current_text == ""):
+        if self.get_current_number() == "0":
             # leading zero forbidden
             return
 
         self.pritn_to_text_bar(self.solution, button_text)
 
-        self.last_button = button_text
-        self.last_was_operator = False
-
     def on_dot_button_press(self, instance):
         button_text = instance.text
-        if self.current_number_has_dot:
+        last_was_operator = self.is_last_char_operator()
+
+        if self.is_current_number_has_dot():
             # double dot forbidden
             return
-        if self.last_was_operator or self.current_text == "":
+        if last_was_operator or self.current_text == "":
             # leading dot forbidden
             return
 
         self.pritn_to_text_bar(self.solution, button_text)
 
-        self.last_button = button_text
-        self.last_was_operator = False
-        self.current_number_has_dot = True
-
     def on_clear_button_press(self, instance):
         self.set_to_text_bar(self.solution, "")
 
-        self.last_button = None
-        self.last_was_operator = None
-        self.current_number_has_dot = None
-
     def on_solution(self, instance):
-        if self.last_was_operator:
-            return
-        text = self.solution.text
-        if text:
-            solution = str(eval(self.solution.text))
-            self.history.text = self.solution.text
-            self.set_to_text_bar(self.solution, solution)
+        try:
+            last_was_operator = self.is_last_char_operator()
+
+            if last_was_operator:
+                return
+            text = self.solution.text
+            if text:
+                solution = str(eval(self.solution.text))
+                self.history.text = self.solution.text
+                self.set_to_text_bar(self.solution, solution)
+        except ZeroDivisionError:
+            self.set_to_text_bar("")
+            self.set_fake_text_to_bar("Error")
 
     def set_to_text_bar(self, text_bar, text):
         self.current_text = text
@@ -137,6 +131,21 @@ class MainApp(App):
     def set_fake_text_to_bar(self, text_bar, fake_text):
         text_bar.text = fake_text
 
+    def get_last_button(self):
+        return self.current_text[:-1]
+
+    def is_last_char_operator(self):
+        return self.get_last_button() in MainApp.operators
+
+    def is_current_number_has_dot(self):
+        return MainApp.decimal_delimiter in self.get_current_number()
+
+    def get_current_number(self):
+        search = re.search(r'[\d\.]+$', self.current_text)
+        if search:
+            return search.group()
+        else:
+            return ""
 
 if __name__ == "__main__":
     app = MainApp()
