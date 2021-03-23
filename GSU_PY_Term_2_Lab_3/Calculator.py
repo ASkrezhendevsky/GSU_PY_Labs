@@ -77,7 +77,6 @@ class MainApp(App):
 
     def on_number_button_press(self, instance):
         button_text = instance.text
-        last_was_operator = self.is_last_char_operator()
 
         if self.get_current_number() == "0":
             # leading zero forbidden
@@ -87,12 +86,11 @@ class MainApp(App):
 
     def on_dot_button_press(self, instance):
         button_text = instance.text
-        last_was_operator = self.is_last_char_operator()
 
         if self.is_current_number_has_dot():
             # double dot forbidden
             return
-        if last_was_operator or self.current_text == "":
+        if self.get_current_number() == "":
             # leading dot forbidden
             return
 
@@ -113,8 +111,8 @@ class MainApp(App):
                 self.history.text = self.solution.text
                 self.set_to_text_bar(self.solution, solution)
         except ZeroDivisionError:
-            self.set_to_text_bar("")
-            self.set_fake_text_to_bar("Error")
+            self.set_to_text_bar(self.solution, "")
+            self.set_fake_text_to_bar(self.solution, "Error")
 
     def set_to_text_bar(self, text_bar, text):
         self.current_text = text
@@ -132,7 +130,7 @@ class MainApp(App):
         text_bar.text = fake_text
 
     def get_last_button(self):
-        return self.current_text[:-1]
+        return self.current_text[-1]
 
     def is_last_char_operator(self):
         return self.get_last_button() in MainApp.operators
