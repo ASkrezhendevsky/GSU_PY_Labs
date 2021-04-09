@@ -107,7 +107,7 @@ class MainApp(App):
                 return
             text = self.solution.text
             if text:
-                solution = str(eval(self.solution.text))
+                solution = str(eval(self.current_text))
                 self.history.text = self.solution.text
                 self.set_to_text_bar(self.solution, solution)
         except ZeroDivisionError:
@@ -130,6 +130,8 @@ class MainApp(App):
         text_bar.text = fake_text
 
     def get_last_button(self):
+        if len(self.current_text) == 0:
+            return ""
         return self.current_text[-1]
 
     def is_last_char_operator(self):
